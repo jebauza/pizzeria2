@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
            'IngredientesTableSeeder',
            'PizzasTableSeeder',
+           'RolTableSeeder',
+           'UsersTableSeeder',
         ]);
     }
 }

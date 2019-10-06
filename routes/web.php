@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::apiResource('pizzas','PizzaController');
+Route::apiResource('users','UserController');
