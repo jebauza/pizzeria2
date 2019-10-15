@@ -17,6 +17,7 @@ class PizzaController extends Controller
     public function index()
     {
        $pizzas = Pizza::all();
+       dd($pizzas[0]->attributesToArray());
        //return $pizzas->toJson();
        $json_resp = [];
        foreach($pizzas as $pizza)

@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -19,7 +20,13 @@ class UserController extends Controller
         //$users = User::all();
         $users = User::orderBy('id')->get();
         //return csrf_token();
-        return $users;
+        if(request()->wantsJson()){
+            return $users;
+        }
+        else{
+            //codigo para retornar la vista
+            dd('Redirecionar vista');
+        } 
     }
 
     /**
@@ -38,9 +45,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $rules = [
+        /*$rules = [
             'name'=>'required', 
             'email'=>'required|email|unique:users',
             'rol_id'=>'required|exists:rols,id',
@@ -55,14 +62,20 @@ class UserController extends Controller
             'rol_id.exists'=>'El rol no es valido',
             'password.required'=>'El password es requerido',
         ];
-        Validator::make($request->all(), $rules, $messages)->validate();
+        $validator = Validator::make($request->all(), $rules, $messages);*/
+        
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         $user = User::create($data);
         $user->remember_token = Str::random(10);
         $user->api_token = Str::random(80);
         $user->save();
-        return $user;
+        if(request()->wantsJson()){
+            return $user;
+        }
+        else{
+            dd('Retornar vista');
+        }
     }
 
     /**
